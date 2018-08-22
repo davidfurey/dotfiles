@@ -1,0 +1,11 @@
+[push]
+	default = simple
+[credential]
+	helper = osxkeychain
+
+[color]
+	ui = true
+
+[user]
+	name = David Furey
+	email = david.furey@guardian.co.uk
