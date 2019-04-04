@@ -1,5 +1,4 @@
 tap "guardian/homebrew-devtools"
-tap "caskroom/versions"
 
 brew "ssm"
 cask "keepassx"
@@ -22,3 +21,4 @@ cask "atom"
 cask "adobe-acrobat-reader"
 cask "github"
 cask "firefox"
+cask "google-chrome"
