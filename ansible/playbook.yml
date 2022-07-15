@@ -1,0 +1,35 @@
+- name: Laptop setup
+  connection: local
+  hosts: localhost
+  tasks:
+  - name: Symlink dotfiles
+    file:
+      src: '~/.dotfiles/{{ item }}'
+      dest: '~/.{{ item }}'
+      state: link
+    with_items:
+      - Brewfile
+      - gitconfig
+      - zshrc
+      - vimrc
+  - name: Install Brew packages
+    shell:
+      cmd: 'brew bundle --file=~/.Brewfile'
+  - name: Auto hide dock
+    shell: 'osascript ~/.dotfiles/scripts/auto-hide-dock.applescript'
+  - name: Disable natural scroll
+    shell: 'osascript ~/.dotfiles/scripts/disable-natural-scroll.applescript'
+  - name: Enable asdf java plugin
+    shell: 
+      cmd: 'asdf plugin-add java'
+      creates: '~/.asdf/plugins/java'
+  - name: Install Java 11
+    shell: 
+       cmd: 'asdf install java latest:corretto-11'
+       creates: '~/.asdf/installs/java/corretto-11*'
+  - name: Install IntelliJ Scala plugin
+    unarchive:
+      src: 'https://plugins.jetbrains.com/files/1347/194426/scala-intellij-bin-2022.2.8.zip'
+      dest: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/'
+      remote_src: yes
+      creates: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/Scala'

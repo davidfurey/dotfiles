@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+echo "Installing Ansible..."
+brew install ansible
+echo "Applying Ansible Playbook..."
+ansible-playbook ~/.dotfiles/ansible/playbook.yml -i localhost,
