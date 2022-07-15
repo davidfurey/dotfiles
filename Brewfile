@@ -1,5 +1,6 @@
 tap "guardian/homebrew-devtools"
 
+cask "gu-base"
 brew "ssm"
 cask "keepassx"
 cask "intellij-idea"
