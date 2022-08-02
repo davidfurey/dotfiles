@@ -5,4 +5,6 @@ bindkey '\e[F'    end-of-line
 
 alias java11="export JAVA_HOME=/Users/david_furey/.asdf/installs/java/corretto-11.0.15.9.1/"
 
+eval "$(fnm env)"
+
 export CLICOLOR=1
