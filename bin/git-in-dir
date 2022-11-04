@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo $1
+DIR=$PWD
+ITEM=$1
+shift
+cd $ITEM
+git "$@"
+cd $PWD

@@ -12,6 +12,7 @@
       - gitconfig
       - zshrc
       - vimrc
+      - bin
   - name: Install Brew packages
     shell:
       cmd: 'brew bundle --file=~/.Brewfile'

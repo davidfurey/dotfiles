@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SAFE=$(echo $1 | sed 's/\///g')
+~/bin/git-in-dir $1 log --branches --not --remotes --no-walk --decorate --oneline | grep -v "^$SAFE$" | sed "s/^/$SAFE /"
