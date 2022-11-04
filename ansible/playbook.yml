@@ -27,6 +27,10 @@
     shell: 
        cmd: 'asdf install java latest:corretto-11'
        creates: '~/.asdf/installs/java/corretto-11*'
+  - name: Install Java 8
+    shell: 
+       cmd: 'asdf install java latest:corretto-8'
+       creates: '~/.asdf/installs/java/corretto-8.*'
   - name: Install IntelliJ Scala plugin
     unarchive:
       src: 'https://plugins.jetbrains.com/files/1347/194426/scala-intellij-bin-2022.2.8.zip'
