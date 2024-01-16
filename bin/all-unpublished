@@ -2,4 +2,4 @@
 
 cd ~/code
 
-for file in *; do unpublished.sh $file; done
+for file in *; do unpublished $file; done
