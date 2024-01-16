@@ -38,3 +38,13 @@
       dest: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/'
       remote_src: yes
       creates: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/Scala'
+
+  - name: Hammerspoon config directory
+    file:
+      path: '~/.hammerspoon'
+      state: directory
+
+  - name: Install shortcut tool
+    get_url:
+      url: https://raw.githubusercontent.com/phillipbarron/hammerspoonConfig/a55d6a40898e192a8811653a4d3fb5dbab906be8/init.lua
+      dest: '~/.hammerspoon/init.lua'
