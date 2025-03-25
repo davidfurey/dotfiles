@@ -1,4 +1,5 @@
 tap "guardian/homebrew-devtools"
+tap "fastly/tap"
 
 cask "gu-base"
 brew "ssm"
@@ -36,3 +37,4 @@ brew "ammonite-repl"
 cask "vlc"
 brew "pnpm"
 cask "hammerspoon"
+brew "fastly/tap/fastly"
