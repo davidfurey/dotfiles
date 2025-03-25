@@ -1,0 +1,8 @@
+#!/bin/bash
+
+repo=$1
+
+git-in-dir $repo status | grep "nothing to commit, working tree clean" -q
+if [ ! $? -eq 0 ]; then
+  echo $repo
+fi

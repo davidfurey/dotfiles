@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ~/code
+
+for file in *; do unclean-working $file; done
