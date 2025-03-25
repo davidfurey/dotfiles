@@ -1,4 +1,15 @@
 #!/bin/bash
 
+repo=$1
 SAFE=$(echo $1 | sed 's/\///g')
-git-in-dir $1 log --branches --not --remotes --no-walk --decorate --oneline | grep -v "^$SAFE$" | sed "s/^/$SAFE /"
+git-in-dir $repo log --branches --not --remotes --no-walk --decorate --oneline | grep -v "^$SAFE$" | sed "s/^/$SAFE /" |
+while read line
+do
+  branch=$(echo "$line" | sed 's/^[^(]*(\([^\)]*\).*/\1/' | sed 's/HEAD -> //' | sed 's/.*, //')
+  git-in-dir $repo branch -vv | grep "\[origin\/$branch: gone\]" -q
+  if [ $? -eq 0 ]; then
+    >&2 echo "Ignoring $branch: gone"
+  else
+    echo "$line"
+  fi
+done
