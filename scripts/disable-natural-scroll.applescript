@@ -1,7 +1,9 @@
 try
-    tell application "System Preferences"
-        reveal pane "com.apple.preference.trackpad"
-    end tell
+#    tell application "System Preferences"
+#        set current pane to pane "com.apple.Trackpad-Settings.extension"
+#        display dialog "Got here"
+#    end tell
+    do shell script "open x-apple.systempreferences:com.apple.preference.universalaccess?mouse"
     tell application "System Events"
         tell process "System Preferences"
             click radio button "Scroll & Zoom" of tab group 1 of window "Trackpad"
