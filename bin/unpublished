@@ -1,15 +1,13 @@
 #!/bin/bash
 
-repo=$1
-SAFE=$(echo $1 | sed 's/\///g')
-git-in-dir $repo log --branches --not --remotes --no-walk --decorate --oneline | grep -v "^$SAFE$" | sed "s/^/$SAFE /" |
-while read line
-do
-  branch=$(echo "$line" | sed 's/^[^(]*(\([^\)]*\).*/\1/' | sed 's/HEAD -> //' | sed 's/.*, //')
-  git-in-dir $repo branch -vv | grep "\[origin\/$branch: gone\]" -q
-  if [ $? -eq 0 ]; then
-    >&2 echo "Ignoring $branch: gone"
-  else
-    echo "$line"
-  fi
-done
+DIR=${1%/}
+
+# Skip branches whose upstream is gone (normally merged and deleted on the remote)
+git -C "$DIR" for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads 2>/dev/null |
+  awk '$2 != "[gone]" {print $1}' |
+  while read -r branch; do
+    # --no-walk doesn't propagate --not to ancestors, so check reachability explicitly
+    if [ -n "$(git -C "$DIR" rev-list -n1 "refs/heads/$branch" --not --remotes)" ]; then
+      git -C "$DIR" log -1 --format="$DIR %h ($branch) %s" "refs/heads/$branch"
+    fi
+  done

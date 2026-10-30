@@ -2,4 +2,9 @@
 
 cd ~/code
 
-for file in *; do unpublished $file; done
+for dir in */; do
+  dir=${dir%/}
+  # Skip linked worktrees; their branches are reported by the main checkout
+  [ "$(git -C "$dir" rev-parse --git-dir 2>/dev/null)" = "$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null)" ] || continue
+  unpublished "$dir"
+done
