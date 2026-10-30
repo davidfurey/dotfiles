@@ -20,26 +20,8 @@
     shell: 'osascript ~/.dotfiles/scripts/auto-hide-dock.applescript'
   - name: Disable natural scroll
     shell: 'osascript ~/.dotfiles/scripts/disable-natural-scroll.applescript'
-  - name: Enable asdf java plugin
-    shell: 
-      cmd: 'asdf plugin-add java'
-      creates: '~/.asdf/plugins/java'
-  - name: Install Java 21
-    shell:
-       cmd: 'asdf install java latest:corretto-21'
-       creates: '~/.asdf/installs/java/corretto-21*'
-  - name: Install Java 17
-    shell:
-       cmd: 'asdf install java latest:corretto-17'
-       creates: '~/.asdf/installs/java/corretto-17*'
-  - name: Install Java 11
-    shell: 
-       cmd: 'asdf install java latest:corretto-11'
-       creates: '~/.asdf/installs/java/corretto-11*'
-  - name: Install Java 8
-    shell: 
-       cmd: 'asdf install java latest:corretto-8'
-       creates: '~/.asdf/installs/java/corretto-8.*'
+
+# todo: make sure that plugins directory exists, but also make sure that jetbains/intellijversion is correct. Also note that this dir structure won't exist until intellij is first launched
   - name: Install IntelliJ Scala plugin
     unarchive:
       src: 'https://plugins.jetbrains.com/files/1347/194426/scala-intellij-bin-2022.2.8.zip'
