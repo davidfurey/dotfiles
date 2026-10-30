@@ -21,11 +21,37 @@
   - name: Disable natural scroll
     shell: 'osascript ~/.dotfiles/scripts/disable-natural-scroll.applescript'
 
-# todo: make sure that plugins directory exists, but also make sure that jetbains/intellijversion is correct. Also note that this dir structure won't exist until intellij is first launched
+  # The IntelliJ config dir only exists after the IDE has been launched once, so the plugin is skipped until then.
+  - name: Find IntelliJ config directories
+    find:
+      paths: '{{ ansible_env.HOME }}/Library/Application Support/JetBrains'
+      patterns: '^IntelliJIdea\d{4}\.\d+$'
+      use_regex: yes
+      file_type: directory
+    register: intellij_config_dirs
+  - name: Read IntelliJ build info
+    slurp:
+      src: '/Applications/IntelliJ IDEA.app/Contents/Resources/product-info.json'
+    register: intellij_product_info
+    failed_when: false
+  - name: Set IntelliJ facts
+    set_fact:
+      intellij_config_dir: '{{ intellij_config_dirs.files | map(attribute="path") | sort | last }}'
+      intellij_build: '{{ (intellij_product_info.content | b64decode | from_json).productCode }}-{{ (intellij_product_info.content | b64decode | from_json).buildNumber }}'
+    when:
+      - intellij_config_dirs.files | length > 0
+      - intellij_product_info.content is defined
+  - name: Create IntelliJ plugins directory
+    file:
+      path: '{{ intellij_config_dir }}/plugins'
+      state: directory
+    when: intellij_config_dir is defined
+  # The Marketplace redirects to the latest Scala plugin release compatible with the installed build.
   - name: Install IntelliJ Scala plugin
     unarchive:
-      src: 'https://plugins.jetbrains.com/files/1347/194426/scala-intellij-bin-2022.2.8.zip'
-      dest: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/'
+      src: 'https://plugins.jetbrains.com/pluginManager?action=download&id=org.intellij.scala&build={{ intellij_build }}'
+      dest: '{{ intellij_config_dir }}/plugins/'
       remote_src: yes
-      creates: '~/Library/Application Support/JetBrains/IntelliJIdea2022.1/plugins/Scala'
+      creates: '{{ intellij_config_dir }}/plugins/Scala'
+    when: intellij_config_dir is defined
 
