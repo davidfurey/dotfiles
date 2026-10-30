@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/code
+
+for dir in */; do
+  uncommitted "$dir"
+done
