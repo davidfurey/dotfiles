@@ -1,0 +1,17 @@
+#!/bin/bash
+
+log="$1"
+echo "# Chat Summary"
+echo
+echo "## Cost"
+echo
+cost=$(cat "$log" | jq '.requests | .[] | .copilotCredits' | paste -s -d+ - | bc)
+echo "$cost credits"
+echo
+echo "## User input"
+echo
+cat "$log" | jq '.requests | to_entries | map(((.key+1) | tostring) + ": " + .value.message.text) | .[]' -r
+echo
+echo "## Thinking"
+echo
+cat "$log" | jq -r '.requests | to_entries | .[] | "### Request "+((.key+1) | tostring) + "\n\n" + ([.value.response[] | select(.kind == "thinking") | .value] | join("\n"))'
